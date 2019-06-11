@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -24,7 +23,5 @@ public class BacklogEnquiryServiceStarter extends SpringBootServletInitializer {
 	public SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(BacklogEnquiryServiceStarter.class);
 	}
-
-	private static final String MONGO_DB_URL = "mongodb://";
 
 }

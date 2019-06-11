@@ -4,19 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.miracle.backlog.exception.BacklogException;
 import com.miracle.backlog.utility.BacklogUtility;
-import com.miracle.cognitive.response.FeatureResponse;
+import com.miracle.common.bean.APIMicroServiceBean;
+import com.miracle.common.bean.FeatureWithEstimates;
+import com.miracle.common.response.FeatureResponse;
 import com.miracle.database.bean.Filter;
 import com.miracle.database.bean.Release;
 import com.miracle.database.bean.Status;
-import com.miracle.scrum.bean.FeatureWithEstimates;
 import com.miracle.utility.DataUtility;
 
 @RestController
@@ -48,8 +51,8 @@ public class BacklogController {
 
 			int maxStorypoints = backlogUtility.getMaxStoryPoints(release, version);
 
-			Object gatewayResponse = invokeReleasePlanService(maxStorypoints, filterList, projectName, featureStateList,
-					storyStateList);
+			List<FeatureWithEstimates> gatewayResponse = invokeReleasePlanService(maxStorypoints, filterList,
+					projectName, featureStateList, storyStateList);
 
 			response.setObject(gatewayResponse);
 			response.setSuccess(true);
@@ -62,8 +65,8 @@ public class BacklogController {
 		}
 	}
 
-	private Object invokeReleasePlanService(int maxStorypoints, List<Filter> filterList, String projectName,
-			List<Integer> featureStateList, List<Integer> storyStateList) throws BacklogException {
+	private List<FeatureWithEstimates> invokeReleasePlanService(int maxStorypoints, List<Filter> filterList,
+			String projectName, List<Integer> featureStateList, List<Integer> storyStateList) throws BacklogException {
 		try {
 //			APIMicroServiceBean microServiceBean = new APIMicroServiceBean();
 //			microServiceBean.setFeatureStateList(featureStateList);
@@ -80,12 +83,34 @@ public class BacklogController {
 //			return restTemplate.postForObject(resourceUrl, request, Object.class);
 
 			FeatureWithEstimates featureWithEstimates = new FeatureWithEstimates();
-			featureWithEstimates.setEffort(20);
+			featureWithEstimates.setEffort(10);
 			featureWithEstimates.setFeatureID(1);
-			featureWithEstimates.setFeatureName("test");
+			featureWithEstimates.setFeatureName("Feature1");
 			featureWithEstimates.setUid(1);
+
+			FeatureWithEstimates featureWithEstimates1 = new FeatureWithEstimates();
+			featureWithEstimates1.setEffort(30);
+			featureWithEstimates1.setFeatureID(2);
+			featureWithEstimates1.setFeatureName("Feature2");
+			featureWithEstimates1.setUid(2);
+
+			FeatureWithEstimates featureWithEstimates2 = new FeatureWithEstimates();
+			featureWithEstimates2.setEffort(20);
+			featureWithEstimates2.setFeatureID(3);
+			featureWithEstimates2.setFeatureName("Feature3");
+			featureWithEstimates2.setUid(3);
+
+			FeatureWithEstimates featureWithEstimates3 = new FeatureWithEstimates();
+			featureWithEstimates3.setEffort(30);
+			featureWithEstimates3.setFeatureID(4);
+			featureWithEstimates3.setFeatureName("Feature4");
+			featureWithEstimates3.setUid(4);
 			List<FeatureWithEstimates> list = new ArrayList<>();
 			list.add(featureWithEstimates);
+			list.add(featureWithEstimates1);
+			list.add(featureWithEstimates2);
+			list.add(featureWithEstimates3);
+
 			return list;
 		} catch (Exception exception) {
 			throw new BacklogException(exception, "Failed to invoke Release plan service and retrieve response");

@@ -61,13 +61,13 @@ public class BacklogUtility {
 				}
 			}
 
-			int totalStoryPoints = numOfSprints * sprintDuration * resourceCount;
+			int totalWorkingHours = numOfSprints * sprintDuration * resourceCount * 8;
 
 			Team team = dataUtility.loadTeam(teamName);
 			int velocity = team.getVelocity();
 			int workingHours = team.getWorkingHours();
 			double velocityRatio = workingHours / velocity;
-			int maxStorypoints = (int) (totalStoryPoints / velocityRatio);
+			int maxStorypoints = (int) (totalWorkingHours * velocity / workingHours);
 			return maxStorypoints;
 		} catch (Exception exception) {
 			throw new BacklogException(exception, "Failed to calculate maximum story points");
